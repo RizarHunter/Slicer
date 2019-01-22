@@ -7,7 +7,7 @@ void setup() {
   timerSetup();
   buttonSetup();
   setupLogic();
-  //engineSetup();
+  engineSetup();
   serialSetup();
   
   delay(1500);
