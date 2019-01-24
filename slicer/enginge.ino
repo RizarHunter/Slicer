@@ -25,14 +25,9 @@ void engineUpdate() {
 
 void updateSteper() {
   if (isWork) {
-  digitalWrite(pul, LOW);
-  delay(10);
-  digitalWrite(pul, HIGH);
-  delay(10);
-    //findNewPeriod();
-    //changingOfHighAndLow();
-    //pulBoolSetPin();
-    //Serial.print("++");
+    findNewPeriod();
+    changingOfHighAndLow();
+    pulBoolSetPin();
   }
 }
 

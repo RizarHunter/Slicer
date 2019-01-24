@@ -6,8 +6,9 @@ void setupLogic(){
 }
 
 void updateLogic(){
-  if (millisecond - spinTime < spinTimeFull)
+  if (millisecond - spinTime < spinTimeFull){
     isWork = true;
+  }
   else
     isWork = false;
 }

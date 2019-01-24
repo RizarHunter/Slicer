@@ -6,7 +6,7 @@ bool lastPush = false;
 unsigned long delayOfCheaking = 30;
 unsigned long countedTimeButtonUpdate = 0;
 unsigned long millisecondPushed = 0;
-unsigned long delayTimeForUninterruptedSpinning = 10000;
+unsigned long delayTimeForUninterruptedSpinning = 5000;
 
 void buttonSetup() {
   pinMode(button, INPUT);
@@ -34,9 +34,7 @@ void buttonPush(){
 
 void buttonAction(){
   if (thisPush){
-    if (lastPush){
-    
-    }
+    if (lastPush){ }
     else {
       millisecondPushed = millisecond;
       smallAction();
@@ -53,10 +51,8 @@ void buttonAction(){
 
 
 void smallAction(){
-  Serial.println("44");
   setSpinTime();
 }
 void bigAction(){
-  Serial.println("44444");
   setSpinTime();
 }
