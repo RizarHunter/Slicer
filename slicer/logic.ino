@@ -1,5 +1,5 @@
 unsigned long spinTimeFull = 1000;
-unsigned long spinTime;
+unsigned long spinTime ;
 
 void setupLogic(){
   

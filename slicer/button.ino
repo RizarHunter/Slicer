@@ -6,7 +6,7 @@ bool lastPush = false;
 unsigned long delayOfCheaking = 30;
 unsigned long countedTimeButtonUpdate = 0;
 unsigned long millisecondPushed = 0;
-unsigned long delayTimeForUninterruptedSpinning = 5000;
+unsigned long delayTimeForUninterruptedSpinning = 3000;
 
 void buttonSetup() {
   pinMode(button, INPUT);

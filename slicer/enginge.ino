@@ -6,7 +6,7 @@ int dTime; // distance between last pul pin changing and this moment
 bool pulBool = false; // type of signal to engine (pin pul)
 unsigned long microsecondCommonForEngine; // last time of changing signal to pul pin
 unsigned long numberOfSpinning = 0; // current number of chenging pul pin
-int delaySpinTime = 900; // spead of spinning
+int delaySpinTime = 2000; // spead of spinning
 
 void engineSetup() {
   pinMode(pul, OUTPUT);
@@ -14,7 +14,7 @@ void engineSetup() {
   pinMode(enb, OUTPUT);
   
   digitalWrite(enb, HIGH);
-  digitalWrite(enb, LOW); // On
+  //digitalWrite(enb, LOW); // On
   
   digitalWrite(dir, HIGH); // Anti clock spin
 }

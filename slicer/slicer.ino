@@ -6,6 +6,7 @@ unsigned long millisecond = 0;
 void setup() {
   timerSetup();
   buttonSetup();
+  hollSetup();
   setupLogic();
   engineSetup();
   serialSetup();
@@ -16,6 +17,7 @@ void setup() {
 void loop() { 
   timerUpdate();
   buttonUpdate();
+  hollUpdate();
   updateLogic();
   engineUpdate();
 }
