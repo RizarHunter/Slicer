@@ -14,8 +14,6 @@ void engineSetup() {
   pinMode(enb, OUTPUT);
   
   digitalWrite(enb, HIGH);
-  //digitalWrite(enb, LOW); // On
-  
   digitalWrite(dir, HIGH); // Anti clock spin
 }
 
@@ -25,10 +23,18 @@ void engineUpdate() {
 
 void updateSteper() {
   if (isWork) {
+    updateDirection();
     findNewPeriod();
     changingOfHighAndLow();
     pulBoolSetPin();
   }
+}
+
+void updateDirection(){
+  if (side)
+    digitalWrite(dir, HIGH);
+  else
+    digitalWrite(dir, LOW);
 }
 
 void findNewPeriod() {

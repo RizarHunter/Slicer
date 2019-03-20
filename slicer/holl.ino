@@ -2,82 +2,98 @@
 
 int hollInputPin[numberOfPin] = {A0, A1};
 int hollInputData[numberOfPin] = {529, 529};
+const int middleInputData = 545;
 
-#define hollMassLen 500
-int hollInputMass0[hollMassLen];
-int hollInputMass1[hollMassLen];
-unsigned long lastMillis;
-
-#define hollMassLenSmall 20
+#define hollMassLenSmall 10
+#define delayTimeForGetData 10
+unsigned long timeOfWriting[hollMassLenSmall];
 int hollInputMassSmall0[hollMassLenSmall];
 int hollInputMassSmall1[hollMassLenSmall];
 unsigned long lastMillisSmall;
 
-unsigned long m;
+#define hollMassLen 30
+int hollInputMass0[hollMassLen];
+int hollInputMass1[hollMassLen];
+unsigned long lastMillis;
+int numberOfMassAfterStart = 0;
 
-void hollSetup(){
+int distance = 24; // Дистаннція віднімання повинне бути менше за hollMassLen ----------------
+int high = 150; // Поріг чутливості для зупиннення мотора ------------------------------------
+
+void hollSetup() {
   lastMillis = millisecond;
   lastMillisSmall = millisecond;
-  m = millisecond;
 }
 
-void hollUpdate(){
+void hollUpdate() {
   getDataFromSensor();
   getSmallData();
   getBigData();
-
-  /*if (millisecond - m > 10000){
-    for(int i = hollMassLen - 1; i >= 0 ; i--){
-      Serial.println(hollInputMass[i]);
-    }
-    m = millisecond;
-  }*/
-  if (millisecond - m > 100){
-    Serial.println((String)(hollInputData[0]) + " " + (String)(hollInputData[1]));
-    m = millisecond;
-  }
 }
 
-void getDataFromSensor(){
-  for(int i = 0; i < numberOfPin; i++)
-    hollInputData[i] = analogRead(hollInputPin[i]);
+void getDataFromSensor() {
+  for (int i = 0; i < numberOfPin; i++)
+    hollInputData[i] = analogRead(hollInputPin[i]) - middleInputData;
 }
 
-void getSmallData(){
-  if (lastMillisSmall != millisecond){
+void getSmallData() {
+  if (millisecond - lastMillisSmall >= delayTimeForGetData) {
     addNewDataToMassiveSmall(hollInputData);
     lastMillisSmall = millisecond;
   }
 }
-void addNewDataToMassiveSmall(int* data){
-  for(int i = hollMassLenSmall - 1; i > 0; i--){
-    hollInputMassSmall0[i] = hollInputMassSmall0[i-1]; 
-    hollInputMassSmall1[i] = hollInputMassSmall1[i-1]; 
+void addNewDataToMassiveSmall(int* data) {
+  for (int i = hollMassLenSmall - 1; i > 0; i--) {
+    hollInputMassSmall0[i] = hollInputMassSmall0[i - 1];
+    hollInputMassSmall1[i] = hollInputMassSmall1[i - 1];
+    timeOfWriting[i] = timeOfWriting[i - 1];
   }
   hollInputMassSmall0[0] = data[0];
   hollInputMassSmall1[0] = data[1];
+  timeOfWriting[0] = millisecond;
 }
 
-void getBigData(){
-  if (millisecond - lastMillis >= hollMassLenSmall){
-    addNewDataToMassive(getMiddle());
+void getBigData() {
+  if (millisecond - lastMillis >= hollMassLenSmall * delayTimeForGetData) {
+    addNewDataToMassive(getMiddle0(), getMiddle1());
+    setNumberOfMassAfterStart();
+    lastMillis = millisecond;
   }
 }
-void addNewDataToMassive(int* data){
-  for(int i = hollMassLen - 1; i > 0; i--){
-    hollInputMass0[i] = hollInputMass0[i-1]; 
-    hollInputMass1[i] = hollInputMass1[i-1]; 
+void addNewDataToMassive(int data0, int data1) {
+  for (int i = hollMassLen - 1; i > 0; i--) {
+    hollInputMass0[i] = hollInputMass0[i - 1];
+    hollInputMass1[i] = hollInputMass1[i - 1];
   }
-  hollInputMass0[0] = data[0];
-  hollInputMass1[0] = data[1];
+  hollInputMass0[0] = data0;
+  hollInputMass1[0] = data1;
 }
-int* getMiddle(){
-  int middle[] = {0,0};
-  for(int i = 0; i < hollMassLenSmall; i++){
-    middle[0] += hollInputMassSmall0[i];
-    middle[1] += hollInputMassSmall1[i]; 
+int getMiddle0() {
+  int middle = 0;
+  for (int i = 0; i < hollMassLenSmall; i++) {
+    middle += hollInputMassSmall0[i];
   }
-  middle[0] = middle[0] / lastMillisSmall;
-  middle[1] = middle[1] / lastMillisSmall;
+  middle = middle / hollMassLenSmall;
   return middle;
+}
+int getMiddle1() {
+  int middle = 0;
+  for (int i = 0; i < hollMassLenSmall; i++) {
+    middle += hollInputMassSmall1[i];
+  }
+  middle = middle / hollMassLenSmall;
+  return middle;
+}
+void setNumberOfMassAfterStart() {
+  if (isWork) numberOfMassAfterStart++;
+  else numberOfMassAfterStart = 0;
+}
+
+bool isNeedInteruptSpin() {
+  int realDistance = abs(hollInputMass0[distance] - hollInputMass0[0])
+    + abs(hollInputMass1[distance] - hollInputMass1[0]);
+  if (numberOfMassAfterStart > distance && realDistance < high)
+    return true;
+  else
+    return false;
 }
