@@ -1,5 +1,5 @@
 #define buttons 3
-const int button[buttons] = {49, 51, 53};//{2, 3, 4};
+const int button[buttons] = {49, 51, 53}; //{2, 3, 4};
 
 bool thisPush[buttons] = {false, false, false};
 bool lastPush[buttons] = {false, false, false};
@@ -53,6 +53,6 @@ void buttonDetect(int numberOfButton) {
 void buttonReaction() { 
   if (buttonOut[0] == 1) { setStyleSpinUntilWall(); }
   if (buttonOut[1] == 1) { setStyleSpinBack(); }
-  if (buttonOut[1] == 3) { setStyleStopSpin(); }
+  //if (buttonOut[1] == 3) { setStyleStopSpin(); }
   if (buttonOut[2] == 3) { setStyleMinus(); }
 }

@@ -17,7 +17,7 @@ int hollInputMass1[hollMassLen];
 unsigned long lastMillis;
 int numberOfMassAfterStart = 0;
 
-int distance = 24; // Дистаннція віднімання повинне бути менше за hollMassLen ----------------
+int distance = 8; // Дистаннція віднімання повинне бути менше за hollMassLen ----------------
 int high = 150; // Поріг чутливості для зупиннення мотора ------------------------------------
 
 void hollSetup() {

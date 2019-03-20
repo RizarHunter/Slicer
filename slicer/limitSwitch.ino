@@ -1,14 +1,11 @@
-#define startLimitSwitch 8 // 48
-#define endLimitSwitch 9//50
+#define startLimitSwitch 52
+#define endLimitSwitch 48
 bool limitSwitch[2] = {false, false};
 
 unsigned long delayOfCheak = 30;
 unsigned long countedTimeLimitUpdate = 0;
 
 void limitSwitchSetup(){
-  pinMode(7, OUTPUT);
-  digitalWrite(7, HIGH);
-  
   pinMode(startLimitSwitch, INPUT);
   pinMode(endLimitSwitch, INPUT);
 }
